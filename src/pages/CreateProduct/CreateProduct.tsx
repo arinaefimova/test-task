@@ -38,7 +38,7 @@ const CreateProduct: React.FC = () => {
     }
     return {};
   }, []);
-
+  const a =4 ;
   const handleSubmit = useCallback(
     (values: typeof initialValues, { resetForm }: { resetForm: () => void }) => {
       if (!image) {

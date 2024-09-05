@@ -1,0 +1,19 @@
+
+.upper {
+	text-transform: capitalize;
+}
+.labels {
+	margin-bottom: 10px;
+}
+.box {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	span {
+		color: #fff;
+		padding: 5px 8px;
+		border-radius: 4px;
+		background-color: #46a358;
+	}
+}

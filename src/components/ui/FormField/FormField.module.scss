@@ -1,0 +1,24 @@
+.field{
+    border: 1px solid #46a358;
+    padding: 5px 10px;
+    border-radius: 5px;
+    input{
+        width: 100%;
+    }
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+}
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+}
+.msg{
+    color: red;
+    margin-top: 5px;
+}

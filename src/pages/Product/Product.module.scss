@@ -1,0 +1,115 @@
+.row {
+	padding: 40px 0;
+	display: flex;
+	gap: 20px;
+	align-items: flex-start;
+	justify-content: space-between;
+    @media (max-width: 1000px){
+          align-items: center;
+    }
+    @media (max-width: 700px){
+        flex-direction: column;
+        padding: 20px 0;
+          
+    }
+}
+
+.spin{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+    @media (max-height: 550px){
+        margin-top: 90px;
+    }
+
+}
+
+.image {
+	flex: 0 1 50%;
+	max-width: 500px;
+	width: 100%;
+	height: 100%;
+	border-radius: 10px;
+	max-height: 500px;
+	margin: 0 auto;
+	img {
+		border-radius: 10px;
+		max-width: 100%;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+.details {
+	flex: 0 1 50%;
+	padding-right: 50px;
+    overflow: auto;
+    max-height: 500px;
+    background-color: #fbfbfb;
+    padding: 10px;
+	height: 100%;
+	
+	&::-webkit-scrollbar {
+		width: 7px;
+	}
+	&::-webkit-scrollbar-track {
+		border-radius: 10px;
+		background: #f1f1f1;
+	}
+	&::-webkit-scrollbar-thumb {
+		background: #888;
+		border-radius: 10px;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background: #555;
+	}
+
+   
+	
+
+    @media (max-width: 850px) {
+        max-height: 400px;
+    }
+    @media (max-width:700px){
+       max-height: none;
+      overflow: visible;
+    }
+    hr{
+        border-bottom: 1px solid #46a3596e;
+		background-color: transparent;
+        margin-bottom: 20px;
+    }
+}
+
+.actions{
+    margin-top: 30px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    button{
+        display: flex;
+        align-items: center;
+        border-radius: 4px;
+        background-color: #46A358;
+        color: #fff;
+        gap: 10px;
+        padding: 8px 15px;
+        transition: all 0.3s;
+        span{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+       @media (any-hover: hover){
+        &:hover{
+            background-color: #287537;
+        }
+       }
+    }
+    .fav{
+        background-color: red !important;
+    }
+}

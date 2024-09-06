@@ -21,6 +21,16 @@ export const productFormValidation = z.object({
     .regex(/^[^\d]*$/, {
       message: "The type cannot contain numbers.",
     }),
+  meal: z.string()
+    .min(2, {
+      message: "The type must be at least 2 characters long.",
+    })
+    .max(50, {
+      message: "The type must not exceed 30 characters.",
+    })
+    .regex(/^[^\d]*$/, {
+      message: "The type cannot contain numbers.",
+    }),
   calories: z.number()
     .min(1, {
       message: "The calories must be at least 1.",

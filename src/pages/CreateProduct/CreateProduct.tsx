@@ -38,7 +38,7 @@ const CreateProduct: React.FC = () => {
     }
     return {};
   }, []);
-  const a =4 ;
+  
   const handleSubmit = useCallback(
     (values: typeof initialValues, { resetForm }: { resetForm: () => void }) => {
       if (!image) {
@@ -65,27 +65,24 @@ const CreateProduct: React.FC = () => {
     setEditingProduct(product.id); 
     setEditValues(product);
   }, []);
-  
 
   const handleImageChange = useCallback((file: File | null) => {
+    
     setEditValues((prev) => ({
       ...prev,
       image: file,
     }));
   }, []);
-
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setEditValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }, []);
-
-  const handleSave = useCallback(() => {
-    dispatch(editProduct(editValues));
-    setEditingProduct(null);
-  }, [dispatch, editValues]);
+  
+  const handleSave = useCallback(
+   
+    (values: typeof initialValues) => {
+       
+      dispatch(editProduct({ ...values, id: editingProduct! }));
+      setEditingProduct(null);
+    },
+    [dispatch, editingProduct]
+  );
 
   const handleDelete = useCallback((id: number) => {
     dispatch(deleteProduct(id));
@@ -94,36 +91,32 @@ const CreateProduct: React.FC = () => {
   const productItems = useMemo(() => products.map((product) => (
     <div key={product.id} className={styles.inner}>
       {editingProduct === product.id ? (
-        <>
-          <div className={styles.box}>
-            <h3 className="details-title details-title_nm">Title:</h3>
-            <input type="text" name="name" value={editValues.name} onChange={handleChange} />
-          </div>
-          <MyDropzone setImage={handleImageChange} image={editValues.image} title="" />
-          <div className={styles.boxDescr}>
-            <h3 className="details-title details-title_nm">Description:</h3>
-            <textarea name="description" value={editValues.description} onChange={handleChange} />
-          </div>
-          <div className={styles.box}>
-            <h3 className="details-title details-title_nm">Type of meal:</h3>
-            <input type="text" name="meal" value={editValues.meal} onChange={handleChange} />
-          </div>
-          <div className={styles.box}>
-            <h3 className="details-title details-title_nm">Calories:</h3>
-            <input type="number" name="calories" value={editValues.calories} onChange={handleChange} />
-          </div>
-          <div className={styles.box}>
-            <h3 className="details-title details-title_nm">Cuisine:</h3>
-            <input type="text" name="type" value={editValues.type} onChange={handleChange} />
-          </div>
-          <div className={styles.buttons}>
-            <button className={styles.button} onClick={handleSave}>Save</button>
-            <button className={styles.button} onClick={() => setEditingProduct(null)}>Cancel</button>
-          </div>
-        </>
+        <Formik
+          initialValues={editValues}
+          validate={validate}
+          onSubmit={handleSave}
+          enableReinitialize
+        >
+          {({ setFieldValue }) => (
+            <Form className={styles.form}>
+               <FormField name="name" text=" " title="Title:" msgName="name" />
+               <MyDropzone setImage={handleImageChange} image={editValues.image} title="" />
+               {imgErr && <div className={styles.msg}>You should add an image</div>}
+              <ErrorMessage name="image" component="div" className={styles.error} />
+              <FormField as="textarea" name="description" text=" " title="Description:" msgName="description" />
+              <FormField name="meal" text=" " title="Type of meal:" msgName="meal" />
+              <FormField type="number" name="calories" text=" " title="Calories:" msgName="calories" />
+              <FormField name="type" text=" " title="Cuisine:" msgName="type" />
+              <div className={styles.buttons}>
+                <button type="submit" className={styles.button}>Save</button>
+                <button type="button" className={styles.button} onClick={() => setEditingProduct(null)}>Cancel</button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       ) : (
         <div className={styles.item}>
-          <div className={styles.remove} onClick={() => handleDelete(product?.id!)}><CiCircleRemove size={30} /></div>
+          <div className={styles.remove} onClick={() => handleDelete(product.id!)}><CiCircleRemove size={30} /></div>
           <p className={styles.label}>{product.name}</p>
           {product.image && product.image instanceof File && (
             <img className={styles.img} src={URL.createObjectURL(product.image)} alt={product.name} />
@@ -137,7 +130,7 @@ const CreateProduct: React.FC = () => {
         </div>
       )}
     </div>
-  )), [editingProduct, editValues, handleChange, handleEditClick, handleImageChange, handleSave, handleDelete, products]);
+  )), [editingProduct, editValues, handleDelete, handleEditClick, handleSave, validate, products]);
 
   return (
     <div className={styles.createProduct}>
@@ -156,7 +149,7 @@ const CreateProduct: React.FC = () => {
                   <FormField name="type" text="Cuisine type..." title="Cuisine type" msgName="type" />
                   <FormField type="number" name="calories" text="Calories..." title="Calories" msgName="calories" />
                   <FormField as="textarea" name="description" text="Type anything here..." title="Description" msgName="description" />
-                  <FormField name="meal" text="Meal..." title="Type of meal" msgName="type" />
+                  <FormField name="meal" text="Meal..." title="Type of meal" msgName="meal" />
                   <MyDropzone title="Choose image" setImage={setImage} image={image} />
                   {imgErr && <div className={styles.msg}>You should add an image</div>}
                   <button type="submit" className={styles.button}>Create product</button>

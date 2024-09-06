@@ -29,6 +29,7 @@ const Dropzone: React.FC<MyDropzoneProps> = ({ setImage, image, title }) => {
 				<input {...getInputProps()} />
 				{image ? (
 					<div className={styles.imagePreview}>
+                        
 						<img
 							src={URL.createObjectURL(image)}
 							alt="Uploaded Preview"

@@ -1,6 +1,6 @@
 import styles from "./ProductDetails.module.scss";
 import { FC } from "react";
-import { Product } from "../../../types";
+
 
 interface ProductDetailsProps{
     name:string;

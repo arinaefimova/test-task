@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {createHashRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/common/Layout/Layout.tsx";
 import Home from "./pages/Home/Home.tsx";
 
@@ -11,7 +11,7 @@ import { store } from "./redux/store.ts";
 import Product from "./pages/Product/Product.tsx";
 import CreateProduct from "./pages/CreateProduct/CreateProduct.tsx";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
 	{
 		path: "/",
 		element: <Layout />,

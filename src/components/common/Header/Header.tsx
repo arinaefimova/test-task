@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from "react";
-import { CiHeart, CiUser } from "react-icons/ci";
+import {  CiUser } from "react-icons/ci";
 import { Link, NavLink } from "react-router-dom";
 import classNames from "classnames";
 import styles from "./Header.module.scss";

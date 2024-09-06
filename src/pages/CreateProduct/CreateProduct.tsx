@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import { productFormValidation } from "../../lib/validation";
 import styles from "./CreateProduct.module.scss";
 import FormField from "../../components/ui/FormField/FormField";
-import MyDropzone from "../../components/ui/DropZone/DropZone";
+import Dropzone from "../../components/ui/DropZone/DropZone"; // Обновленный импорт
 import { useAppDispatch } from "../../redux/hooks";
 import { addProduct, deleteProduct, editProduct } from "../../redux/slices/productSlice";
 import { useSelector } from "react-redux";
@@ -17,12 +17,12 @@ const initialValues = {
   calories: 0,
   description: "",
   meal: "",
-  image: null as File | null,
+  image: null as string | null, 
 };
 
 const CreateProduct: React.FC = () => {
-  const [image, setImage] = useState<File | null>(null);
-  const [imgErr, setImgErr] = useState(false);
+  const [image, setImage] = React.useState<string | null>(null); 
+  const [imgErr, setImgErr] = React.useState(false);
   const dispatch = useAppDispatch();
   const products = useSelector((state: RootState) => state.product.products);
 
@@ -38,7 +38,7 @@ const CreateProduct: React.FC = () => {
     }
     return {};
   }, []);
-  
+
   const handleSubmit = useCallback(
     (values: typeof initialValues, { resetForm }: { resetForm: () => void }) => {
       if (!image) {
@@ -54,30 +54,27 @@ const CreateProduct: React.FC = () => {
     [dispatch, image]
   );
 
-  const [editingProduct, setEditingProduct] = useState<number | null>(null);
-  const [editValues, setEditValues] = useState(initialValues);
+  const [editingProduct, setEditingProduct] = React.useState<number | null>(null);
+  const [editValues, setEditValues] = React.useState(initialValues);
 
   const handleEditClick = useCallback((product: Product) => {
     if (product.id === undefined) {
       console.error("Product ID is undefined");
       return;
     }
-    setEditingProduct(product.id); 
+    setEditingProduct(product.id);
     setEditValues(product);
   }, []);
 
-  const handleImageChange = useCallback((file: File | null) => {
-    
+  const handleImageChange = useCallback((file: string | null) => { 
     setEditValues((prev) => ({
       ...prev,
       image: file,
     }));
   }, []);
-  
+
   const handleSave = useCallback(
-   
     (values: typeof initialValues) => {
-       
       dispatch(editProduct({ ...values, id: editingProduct! }));
       setEditingProduct(null);
     },
@@ -97,11 +94,11 @@ const CreateProduct: React.FC = () => {
           onSubmit={handleSave}
           enableReinitialize
         >
-          {({ setFieldValue }) => (
+         
             <Form className={styles.form}>
-               <FormField name="name" text=" " title="Title:" msgName="name" />
-               <MyDropzone setImage={handleImageChange} image={editValues.image} title="" />
-               {imgErr && <div className={styles.msg}>You should add an image</div>}
+              <FormField name="name" text=" " title="Title:" msgName="name" />
+              <Dropzone setImage={handleImageChange} image={editValues.image} title="" />
+             
               <ErrorMessage name="image" component="div" className={styles.error} />
               <FormField as="textarea" name="description" text=" " title="Description:" msgName="description" />
               <FormField name="meal" text=" " title="Type of meal:" msgName="meal" />
@@ -112,25 +109,25 @@ const CreateProduct: React.FC = () => {
                 <button type="button" className={styles.button} onClick={() => setEditingProduct(null)}>Cancel</button>
               </div>
             </Form>
-          )}
+         
         </Formik>
       ) : (
         <div className={styles.item}>
-          <div className={styles.remove} onClick={() => handleDelete(product.id!)}><CiCircleRemove size={30} /></div>
-          <p className={styles.label}>{product.name}</p>
-          {product.image && product.image instanceof File && (
-            <img className={styles.img} src={URL.createObjectURL(product.image)} alt={product.name} />
-          )}
-          <p className={styles.descr}>Info:<span>{product.description}</span></p>
-          <p className="details-title details-title_sm">Type of meal: <span>{product.meal}</span></p>
-          <p className="details-title details-title_sm">Calories:<span> {product.calories} </span></p>
-          <p className="details-title details-title_sm">Cuisine: <span>{product.type}</span></p>
-          <button className={styles.button} onClick={() => handleEditClick(product)}>Edit</button>
-          <hr />
-        </div>
+        <div className={styles.remove} onClick={() => handleDelete(product.id!)}><CiCircleRemove size={30} /></div>
+        <p className={styles.label}>{product.name}</p>
+        <img src={product.image!} alt={product.name} className={styles.img} />
+        <p className={styles.descr}>Info:<span>{product.description}</span></p>
+        <p className="details-title details-title_sm">Type of meal: <span>{product.meal}</span></p>
+        <p className="details-title details-title_sm">Calories:<span> {product.calories} </span></p>
+        <p className="details-title details-title_sm">Cuisine: <span>{product.type}</span></p>
+        <button className={styles.button} onClick={() => handleEditClick(product)}>Edit</button>
+        <hr />
+      </div>
+
+
       )}
     </div>
-  )), [editingProduct, editValues, handleDelete, handleEditClick, handleSave, validate, products]);
+  )), [products, editingProduct, editValues, handleSave, handleImageChange, imgErr]);
 
   return (
     <div className={styles.createProduct}>
@@ -143,18 +140,18 @@ const CreateProduct: React.FC = () => {
               validate={validate}
               onSubmit={handleSubmit}
             >
-              {({ setFieldValue }) => (
+             
                 <Form className={styles.form}>
                   <FormField name="name" text="Product name..." title="Product name" msgName="name" />
                   <FormField name="type" text="Cuisine type..." title="Cuisine type" msgName="type" />
                   <FormField type="number" name="calories" text="Calories..." title="Calories" msgName="calories" />
                   <FormField as="textarea" name="description" text="Type anything here..." title="Description" msgName="description" />
                   <FormField name="meal" text="Meal..." title="Type of meal" msgName="meal" />
-                  <MyDropzone title="Choose image" setImage={setImage} image={image} />
+                  <Dropzone title="Choose image" setImage={setImage} image={image} />
                   {imgErr && <div className={styles.msg}>You should add an image</div>}
                   <button type="submit" className={styles.button}>Create product</button>
                 </Form>
-              )}
+             
             </Formik>
           </div>
           <div className={styles.c}>

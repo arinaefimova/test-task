@@ -53,7 +53,7 @@ export interface Product {
 	type: string;
 	calories: number;
 	meal: string;
-	image: File | null;
+	image:  null| string;
 	description: string;
     id?: number;
     yield?:number;
